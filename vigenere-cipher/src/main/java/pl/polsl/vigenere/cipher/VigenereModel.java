@@ -32,7 +32,7 @@ public class VigenereModel {
     private String textToCode;
     
     /**
-     * Constructor of VigenereModel.
+     * Constructor of VigenereModel. Every String is converted to upper case.
      * @param secretLetter Letter given by user to be first in the encoded message.
      * @param textToCode String to be encoded.
      */
@@ -59,9 +59,9 @@ public class VigenereModel {
         char[][] cipherTable=new char[26][26];
         createCipherTable(cipherTable);
         
-         for(int i = 0; i < textToCode.length(); i++) {
-            charEncodedMessage[i] = cipherTable[textToCode.charAt(i)][encryptionKey.charAt(i)]; // ERROR: not sure why, maybe char[]=char[][] ? or indexes of cipherTable
-        }
+        //for(int i = 0; i < textToCode.length(); i++) {
+        //    charEncodedMessage[i] = cipherTable[Character.getNumericValue(textToCode.charAt(i))][Character.getNumericValue(encryptionKey.charAt(i))]; // ERROR: not sure why, indexes of cipherTable???
+        //}
         
         //encodedMessage = charEncodedMessage.toString();
         System.out.println(encodedMessage);
@@ -94,6 +94,17 @@ public class VigenereModel {
             for (int j = 0; j < 26; j++) {
                 cipherTable[i][j]=(char)(65 + ((i+j)%26));
             }
+        }
+    }
+    
+    public void setParamFromCommandLine(String[] args){
+        for (int i = 0; i < args.length; i++) {
+            if(args[i].equalsIgnoreCase("-key")){
+                this.encryptionKey=args[i+1];
+            }
+            else if(args[i].equalsIgnoreCase("-message")){
+                    this.textToCode=args[i+1];
+                }
         }
     }
 }
