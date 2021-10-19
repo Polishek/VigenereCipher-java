@@ -15,10 +15,12 @@ public class VigenereController {
     private VigenereView theView;
     
     private String[] args;
-    
+            
     public VigenereController(VigenereModel theModel, VigenereView theView, String[] args){
         this.theModel=theModel;
         this.theView=theView;
         this.args=args;
+        
+        // Can I insert method to manage args array, that will send it to proper attributes on VigenereModel?
     }
 }

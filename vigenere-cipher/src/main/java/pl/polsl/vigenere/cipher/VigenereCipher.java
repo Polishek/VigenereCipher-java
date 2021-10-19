@@ -12,7 +12,9 @@ public class VigenereCipher {
     public static void main(String[] args){
         VigenereModel theModel = new VigenereModel();
         VigenereView theView = new VigenereView();
+
         VigenereController theController = new VigenereController(theModel, theView, args);
+
     }
     
 }
