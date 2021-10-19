@@ -10,8 +10,9 @@ package pl.polsl.vigenere.cipher;
  */
 public class VigenereCipher {
     public static void main(String[] args){
-        VigenereModel test = new VigenereModel("h", "siema");
-        test.encodeMessage();
+        VigenereModel theModel = new VigenereModel();
+        VigenereView theView = new VigenereView();
+        VigenereController theController = new VigenereController(theModel, theView, args);
     }
     
 }
