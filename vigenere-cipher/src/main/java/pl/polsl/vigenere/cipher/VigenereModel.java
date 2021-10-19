@@ -41,6 +41,8 @@ public class VigenereModel {
         this.textToCode=textToCode.toUpperCase();
     }
     
+    public VigenereModel(){}
+    
     /**
      * Method for creating key used to encode message.
      */
