@@ -12,7 +12,6 @@ import javax.swing.*;
  * @author Bartosz Dera
  */
 public class VigenereView extends JFrame{
-    
-
+    public VigenereView(){}
     
 }
