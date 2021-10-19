@@ -10,4 +10,15 @@ package pl.polsl.vigenere.cipher;
  */
 public class VigenereController {
     
+    private VigenereModel theModel;
+    
+    private VigenereView theView;
+    
+    private String[] args;
+    
+    public VigenereController(VigenereModel theModel, VigenereView theView, String[] args){
+        this.theModel=theModel;
+        this.theView=theView;
+        this.args=args;
+    }
 }
