@@ -36,35 +36,58 @@ public class VigenereModel {
      * @param secretLetter Letter given by user to be first in the encoded message.
      * @param textToCode String to be encoded.
      */
-    public VigenereModel(String secretLetter, String textToCode){
-        this.secretLetter=secretLetter.toUpperCase();
-        this.textToCode=textToCode.toUpperCase();
-    }
-    
-    public VigenereModel(){}
+//    public VigenereModel(String secretLetter, String textToCode){
+//        this.secretLetter=secretLetter.toUpperCase();
+//        this.textToCode=textToCode.toUpperCase();
+//    }
+//    
+//    public VigenereModel(){}
     
     /**
      * Method for creating key used to encode message.
      */
     private void createKey(){
-        encryptionKey = secretLetter + removeLastChar(textToCode);
+        encryptionKey = secretLetter + shiftRight(textToCode);
+    }
+    
+    public String shiftRight(String text)
+    {
+        String[] strings = text.split(" ");
+
+        String lastCharacter = "";
+        for (int i = 0; i < strings.length; i++)
+        {
+            String currentText = lastCharacter + strings[i];
+            lastCharacter = currentText.substring(currentText.length() - 1);
+            strings[i] = currentText.substring(0, currentText.length() - 1);
+        }
+        return String.join(" ", strings);
     }
     
     /**
      * Method responsible for encoding given message.
      */
-    public void encodeMessage(){  //does it have to be public?
+    public void encodeMessage(){
         char[] charEncodedMessage = new char[textToCode.length()];
+        createKey();
+        
+        System.out.println(textToCode);
+        System.out.println(encryptionKey);
         
         char[][] cipherTable=new char[26][26];
         createCipherTable(cipherTable);
+        Character spaceChar = ' ';
         
-        //for(int i = 0; i < textToCode.length(); i++) {
-        //    charEncodedMessage[i] = cipherTable[Character.getNumericValue(textToCode.charAt(i))][Character.getNumericValue(encryptionKey.charAt(i))]; // ERROR: not sure why, indexes of cipherTable???
-        //}
-        
-        //encodedMessage = charEncodedMessage.toString();
-        System.out.println(encodedMessage);
+        for(int i = 0; i < textToCode.length(); i++) {
+            if( textToCode.charAt(i) == ' ' ){
+                charEncodedMessage[i] = ' ';
+                continue;
+            };
+            //Read char value and then get numeric value of character, substitute by 10 (getNumericValue also reads values of 0-9 numbers)
+            charEncodedMessage[i] = cipherTable[Character.getNumericValue(textToCode.charAt(i)) - 10][Character.getNumericValue(encryptionKey.charAt(i)) - 10];
+        }
+
+        encodedMessage = new String(charEncodedMessage);
     }
     
     /**
@@ -73,6 +96,14 @@ public class VigenereModel {
      */
     public String getEncodedMessage(){
         return encodedMessage;
+    }
+    
+    public void setTextToCode(String text){
+        this.textToCode=text;
+    }
+    
+    public void setSecretLetter(String secretLetter){
+        this.secretLetter = Character.toString(secretLetter.charAt(0));
     }
     
     /** 
@@ -89,7 +120,6 @@ public class VigenereModel {
      * @param cipherTable Table to bo initialized
      */
     private void createCipherTable(char[][] cipherTable){
-        int temp;
         for (int i = 0; i < 26; i++) {
             for (int j = 0; j < 26; j++) {
                 cipherTable[i][j]=(char)(65 + ((i+j)%26));
@@ -100,7 +130,7 @@ public class VigenereModel {
     public void setParamFromCommandLine(String[] args){
         for (int i = 0; i < args.length; i++) {
             if(args[i].equalsIgnoreCase("-key")){
-                this.encryptionKey=args[i+1];
+                setSecretLetter(args[i+1]);
             }
             else if(args[i].equalsIgnoreCase("-message")){
                     this.textToCode=args[i+1];
