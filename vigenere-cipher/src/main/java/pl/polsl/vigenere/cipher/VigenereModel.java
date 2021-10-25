@@ -98,8 +98,23 @@ public class VigenereModel {
         return encodedMessage;
     }
     
+    /**
+     * Get the atribute textToCode.
+     * @return Text to be encoded.
+     */
+    public String getTextToCode(){
+        return this.textToCode;
+    }
+    
+    /**
+     * Set the atribute textToCode.
+     */
     public void setTextToCode(String text){
         this.textToCode=text;
+    }
+    
+    public String getSecretLetter(){
+        return this.secretLetter;
     }
     
     public void setSecretLetter(String secretLetter){
@@ -133,6 +148,7 @@ public class VigenereModel {
                 setSecretLetter(args[i+1]);
             }
             else if(args[i].equalsIgnoreCase("-message")){
+                    
                     this.textToCode=args[i+1];
                 }
         }
