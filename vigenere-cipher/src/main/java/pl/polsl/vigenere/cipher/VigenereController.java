@@ -25,6 +25,8 @@ public class VigenereController {
         if(args.length != 0){
             this.args=args;
             theModel.setParamFromCommandLine(args);
+            theView.setTextToCode(theModel.getTextToCode());
+            theView.setSecretLetter(theModel.getSecretLetter());
         }
         
         // Can I insert method to manage args array, that will send it to proper attributes on VigenereModel?
