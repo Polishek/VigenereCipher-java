@@ -117,14 +117,26 @@ public class VigenereView extends JFrame {
     private javax.swing.JTextField jTextToCode;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Getter of textToCode form textField
+     * @return String object of textToCode
+     */
     public String getTextToCode(){
        return jTextToCode.getText();
     }
     
+    /**
+     * Setter for textToCode field
+     * @param text String to be set
+     */
     public void setTextToCode(String text){
         jTextToCode.setText(text);
     }
     
+    /**
+     * Getter of secretLetter from textField
+     * @return String object of secretLetter
+     */
     public String getSecretLetter(){
         return jTextKey.getText();
     }
@@ -139,5 +151,9 @@ public class VigenereView extends JFrame {
     
     void addEncodeListener(ActionListener listenForEncodeButton){
         jButtonEncode.addActionListener(listenForEncodeButton);
+    }
+    
+    void displayErrorMessage(String errorMessage){
+        JOptionPane.showMessageDialog(this, errorMessage);
     }
 }
