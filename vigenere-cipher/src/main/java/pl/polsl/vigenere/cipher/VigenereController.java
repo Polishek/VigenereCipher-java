@@ -24,7 +24,7 @@ public class VigenereController {
         
         if(args.length != 0){
 //            this.args=args;
-            theModel.setParamFromCommandLine(args);
+            theModel.setParamFromCommandLine(args);      //Why did it work before pull request?
             theView.setTextToCode(theModel.getTextToCode());
             theView.setSecretLetter(theModel.getSecretLetter());
         }
@@ -41,7 +41,7 @@ public class VigenereController {
             theModel.encodeMessage();
             }
             catch(EmptyStringException e){
-                theView.displayErrorMessage("Wartosci wiadomosci oraz klucza nie moga byc puste!");
+                theView.displayErrorMessage(e.getMessage());
             }
             
             theView.setEncodedMessage(theModel.getEncodedMessage());

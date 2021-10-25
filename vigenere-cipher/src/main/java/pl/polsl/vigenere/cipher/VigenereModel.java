@@ -153,7 +153,7 @@ public class VigenereModel {
      * Method analyzing parameters and executed when given in command line.
      * @param args Command line
      */
-    public void setParamFromCommandLine(String[] args) throws EmptyStringException {  //why do I need to declare that it THROWS sth?
+    public void setParamFromCommandLine(String[] args) throws EmptyStringException {  //why do I need to declare that it THROWS sth? I doesnt throw it but setters do...
         for (int i = 0; i < args.length; i++) {
             if(args[i].equalsIgnoreCase("-key")){
                 setSecretLetter(args[i+1]);                // <---- HERE?!?
