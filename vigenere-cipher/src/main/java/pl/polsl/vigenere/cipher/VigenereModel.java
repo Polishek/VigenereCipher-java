@@ -4,8 +4,9 @@
  */
 package pl.polsl.vigenere.cipher;
 
+import java.util.Arrays;
+
 /**
- *
  * @author Bartosz Dera
  * @version 1.0
  */
@@ -32,47 +33,99 @@ public class VigenereModel {
     private String textToCode;
     
     /**
-     * Constructor of VigenereModel. Every String is converted to upper case.
-     * @param secretLetter Letter given by user to be first in the encoded message.
-     * @param textToCode String to be encoded.
-     */
-    public VigenereModel(String secretLetter, String textToCode){
-        this.secretLetter=secretLetter.toUpperCase();
-        this.textToCode=textToCode.toUpperCase();
-    }
-    
-    public VigenereModel(){}
-    
-    /**
      * Method for creating key used to encode message.
      */
     private void createKey(){
-        encryptionKey = secretLetter + removeLastChar(textToCode);
+        encryptionKey = secretLetter + shiftRight(textToCode);
+    }
+    
+    /**
+     * Method moving characters in String one time to right
+     * with leaving Space-value chars on same indexes.
+     * Last character of String is removed.
+     * @param text Text of value of textToCode
+     * @return Value of second part to create encryptionKey
+     */
+    public String shiftRight(String text)
+    {
+        String[] strings = text.split(" ");
+
+        String lastCharacter = "";
+        for (int i = 0; i < strings.length; i++)
+        {
+            String currentText = lastCharacter + strings[i];
+            lastCharacter = currentText.substring(currentText.length() - 1);
+            strings[i] = currentText.substring(0, currentText.length() - 1);
+        }
+        return String.join(" ", strings);
     }
     
     /**
      * Method responsible for encoding given message.
      */
-    public void encodeMessage(){  //does it have to be public?
+    public void encodeMessage(){
         char[] charEncodedMessage = new char[textToCode.length()];
+        createKey();
         
         char[][] cipherTable=new char[26][26];
         createCipherTable(cipherTable);
+        Character spaceChar = ' ';
         
-        //for(int i = 0; i < textToCode.length(); i++) {
-        //    charEncodedMessage[i] = cipherTable[Character.getNumericValue(textToCode.charAt(i))][Character.getNumericValue(encryptionKey.charAt(i))]; // ERROR: not sure why, indexes of cipherTable???
-        //}
-        
-        //encodedMessage = charEncodedMessage.toString();
-        System.out.println(encodedMessage);
+        for(int i = 0; i < textToCode.length(); i++) {
+            if( textToCode.charAt(i) == ' ' ){
+                charEncodedMessage[i] = ' ';
+                continue;
+            };
+            //Read char value and then get numeric value of character, substitute by 10 (getNumericValue also reads values of 0-9 numbers)
+            charEncodedMessage[i] = cipherTable[Character.getNumericValue(textToCode.charAt(i)) - 10][Character.getNumericValue(encryptionKey.charAt(i)) - 10];
+        }
+
+        encodedMessage = new String(charEncodedMessage);
     }
     
     /**
-     * Get the atribute encodedMessage.
+     * Gets the atribute encodedMessage.
      * @return Encoded message
      */
     public String getEncodedMessage(){
         return encodedMessage;
+    }
+    
+    /**
+     * Gets the atribute textToCode.
+     * @return String object with value of textToCode.
+     */
+    public String getTextToCode(){
+        return this.textToCode;
+    }
+    
+    /**
+     * Sets the atribute textToCode. Additionally removes all spaces before proper textToCode.
+     * @param text String value to be textToCode
+     */
+    public void setTextToCode(String text) throws EmptyStringException{
+        while(text.charAt(0) == ' '){
+            text = text.substring(1);
+        }
+        if(text.isEmpty()){ throw new EmptyStringException("Pole wiadomości nie moze być puste!"); }
+        this.textToCode=text;
+    }
+    
+    /**
+     * Gets the value of attribute secretLetter
+     * @return String object with value of secretLetter
+     */
+    public String getSecretLetter(){
+        return this.secretLetter;
+    }
+    
+    /**
+     * Seets the attribute secretLetter.
+     * @param secretLetter String value to be secretLetter
+     */
+    public void setSecretLetter(String secretLetter) throws EmptyStringException{
+        if(secretLetter.isEmpty()){ throw new EmptyStringException("Pole sekretnej litery nie moze być puste!"); }
+        this.secretLetter = Character.toString(secretLetter.charAt(0));
     }
     
     /** 
@@ -89,7 +142,6 @@ public class VigenereModel {
      * @param cipherTable Table to bo initialized
      */
     private void createCipherTable(char[][] cipherTable){
-        int temp;
         for (int i = 0; i < 26; i++) {
             for (int j = 0; j < 26; j++) {
                 cipherTable[i][j]=(char)(65 + ((i+j)%26));
@@ -97,14 +149,39 @@ public class VigenereModel {
         }
     }
     
-    public void setParamFromCommandLine(String[] args){
+    /**
+     * Method analyzing parameters and executed when given in command line.
+     * @param args Command line
+     */
+    public void setParamFromCommandLine(String[] args) throws EmptyStringException {  //why do I need to declare that it THROWS sth?
         for (int i = 0; i < args.length; i++) {
             if(args[i].equalsIgnoreCase("-key")){
-                this.encryptionKey=args[i+1];
+                setSecretLetter(args[i+1]);                // <---- HERE?!?
             }
             else if(args[i].equalsIgnoreCase("-message")){
-                    this.textToCode=args[i+1];
+                    String[] temp = Arrays.copyOfRange(args, i+1, args.length);
+                    
+                    this.textToCode=readTextToCode(temp);
                 }
         }
+    }
+    
+    /**
+     * Method reading whole textToCode string from command line
+     * @param temp Array of Strings to be analyzed
+     * @return textToCode
+     */
+    private String readTextToCode(String[] temp){
+        int i = 0;
+        String result = ""; //is initialization needed?
+        while(i < temp.length){
+            if(temp[i].charAt(0) == '-'){
+                break;
+            }
+            result = result.concat(temp[i]+' ');
+            i++;
+        }
+        
+        return result;
     }
 }

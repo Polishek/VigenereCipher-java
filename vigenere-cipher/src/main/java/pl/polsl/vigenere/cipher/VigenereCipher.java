@@ -16,6 +16,8 @@ public class VigenereCipher {
         VigenereView theView = new VigenereView();
 
         VigenereController theController = new VigenereController(theModel, theView, args);
+        
+        theView.setVisible(true);
     }
     
 }
