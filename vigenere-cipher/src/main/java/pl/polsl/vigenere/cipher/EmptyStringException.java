@@ -13,6 +13,10 @@ public class EmptyStringException extends Exception{
     public EmptyStringException(){
     }
     
+    /**
+     * Constructor of EmptyStringException
+     * @param message String object with errorMessage
+     */
     public EmptyStringException(String message){
         super(message);
     }

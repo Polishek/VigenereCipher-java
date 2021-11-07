@@ -9,6 +9,7 @@ import java.util.Arrays;
 /**
  * @author Bartosz Dera
  * @version 1.0
+ * Class implementing VigenereModel object
  */
 public class VigenereModel {
     /**
@@ -48,6 +49,8 @@ public class VigenereModel {
      */
     public String shiftRight(String text)
     {
+        if(text.isEmpty()) { return "";}
+        
         String[] strings = text.split(" ");
 
         String lastCharacter = "";
@@ -63,9 +66,13 @@ public class VigenereModel {
     /**
      * Method responsible for encoding given message.
      */
-    public void encodeMessage(){
+    public void encodeMessage() throws EmptyStringException{
         char[] charEncodedMessage = new char[textToCode.length()];
         createKey();
+        
+        if(encryptionKey.isEmpty() || textToCode.isEmpty()){
+            throw new EmptyStringException("Ciąg do zakodowania lub klucz jest pusty!");
+        }
         
         char[][] cipherTable=new char[26][26];
         createCipherTable(cipherTable);
@@ -75,9 +82,22 @@ public class VigenereModel {
             if( textToCode.charAt(i) == ' ' ){
                 charEncodedMessage[i] = ' ';
                 continue;
-            };
+            }
+            else if(Character.getNumericValue(textToCode.charAt(i)) > 26 || Character.getNumericValue(textToCode.charAt(i)) < 10 ){
+                charEncodedMessage[i] = textToCode.charAt(i);
+                continue;
+            }
+            
+            
+            int keyValue;
+            if(Character.getNumericValue(encryptionKey.charAt(i)) > 26 || Character.getNumericValue(encryptionKey.charAt(i)) < 10){
+                keyValue = 0;
+            }
+            else {
+                keyValue = Character.getNumericValue(encryptionKey.charAt(i)) - 10; 
+            }
             //Read char value and then get numeric value of character, substitute by 10 (getNumericValue also reads values of 0-9 numbers)
-            charEncodedMessage[i] = cipherTable[Character.getNumericValue(textToCode.charAt(i)) - 10][Character.getNumericValue(encryptionKey.charAt(i)) - 10];
+            charEncodedMessage[i] = cipherTable[Character.getNumericValue(textToCode.charAt(i)) - 10][keyValue];
         }
 
         encodedMessage = new String(charEncodedMessage);
@@ -103,12 +123,13 @@ public class VigenereModel {
      * Sets the atribute textToCode. Additionally removes all spaces before proper textToCode.
      * @param text String value to be textToCode
      */
-    public void setTextToCode(String text) throws EmptyStringException{
-        while(text.charAt(0) == ' '){
-            text = text.substring(1);
-        }
-        if(text.isEmpty()){ throw new EmptyStringException("Pole wiadomości nie moze być puste!"); }
-        this.textToCode=text;
+    public void setTextToCode(String text){
+//        while(!text.isEmpty() && text.charAt(0) == ' '){
+//            text = text.substring(1);
+//        }
+        
+        
+        this.textToCode=text.trim();
     }
     
     /**
@@ -120,11 +141,13 @@ public class VigenereModel {
     }
     
     /**
-     * Seets the attribute secretLetter.
+     * Sets the attribute secretLetter.
      * @param secretLetter String value to be secretLetter
      */
-    public void setSecretLetter(String secretLetter) throws EmptyStringException{
-        if(secretLetter.isEmpty()){ throw new EmptyStringException("Pole sekretnej litery nie moze być puste!"); }
+    public void setSecretLetter(String secretLetter){
+        while(secretLetter.charAt(0) == ' ' || Character.getNumericValue(secretLetter.charAt(0)) > 26 || Character.getNumericValue(secretLetter.charAt(0)) < 10){
+            secretLetter = secretLetter.substring(1);
+        }
         this.secretLetter = Character.toString(secretLetter.charAt(0));
     }
     
@@ -153,10 +176,10 @@ public class VigenereModel {
      * Method analyzing parameters and executed when given in command line.
      * @param args Command line
      */
-    public void setParamFromCommandLine(String[] args) throws EmptyStringException {  //why do I need to declare that it THROWS sth? I doesnt throw it but setters do...
+    public void setParamFromCommandLine(String[] args){
         for (int i = 0; i < args.length; i++) {
             if(args[i].equalsIgnoreCase("-key")){
-                setSecretLetter(args[i+1]);                // <---- HERE?!?
+                setSecretLetter(args[i+1]);
             }
             else if(args[i].equalsIgnoreCase("-message")){
                     String[] temp = Arrays.copyOfRange(args, i+1, args.length);

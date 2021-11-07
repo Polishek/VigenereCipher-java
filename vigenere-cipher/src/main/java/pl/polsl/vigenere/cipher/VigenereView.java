@@ -10,6 +10,7 @@ import javax.swing.*;
 /**
  *
  * @author Bartosz Dera
+ * Class implementing VigenereModel object
  */
 public class VigenereView extends JFrame {
 
@@ -141,18 +142,34 @@ public class VigenereView extends JFrame {
         return jTextKey.getText();
     }
     
+    /**
+     * Setter of secretLetter from textField
+     * @param secretLetter String object of secretLetter
+     */
     public void setSecretLetter(String secretLetter){
         jTextKey.setText(secretLetter);
     }
     
+    /**
+     * Setter of encodedMessage from VigenereModel
+     * @param encodedText return value after encoding message
+     */
     public void setEncodedMessage(String encodedText){
         jTextEncoded.setText(encodedText);
     }
     
+    /**
+     * Method adding listener of when the button was pressed
+     * @param listenForEncodeButton Object of listenForEncodeButton
+     */
     void addEncodeListener(ActionListener listenForEncodeButton){
         jButtonEncode.addActionListener(listenForEncodeButton);
     }
     
+    /**
+     * Method executing displaybox with information message
+     * @param errorMessage String to be displayed
+     */
     void displayErrorMessage(String errorMessage){
         JOptionPane.showMessageDialog(this, errorMessage);
     }

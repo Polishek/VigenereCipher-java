@@ -12,12 +12,23 @@ import java.awt.event.ActionListener;
  */
 public class VigenereController {
     
+    /**
+     * Object of VigenereModel
+     */
     private final VigenereModel theModel;
     
+    /**
+     * Object of VigenereView
+     */
     private final VigenereView theView;
     
 //    private String[] args = null;
-            
+    /**
+     * Constructor of VigenereController
+     * @param theModel Object of VigenereModel
+     * @param theView Object of VigenereView
+     * @param args Array of String objects from command line
+     */      
     public VigenereController(VigenereModel theModel, VigenereView theView, String[] args){
         this.theModel=theModel;
         this.theView=theView;
@@ -29,12 +40,8 @@ public class VigenereController {
             theView.setSecretLetter(theModel.getSecretLetter());
         }
         
-        this.theView.addEncodeListener(new EncodeListener());
-    }
-    
-    class EncodeListener implements ActionListener{
-        @Override
-        public void actionPerformed(ActionEvent evt){
+        //this.theView.addEncodeListener(new EncodeListener());        
+        this.theView.addEncodeListener(evt -> {
             try{
             theModel.setTextToCode(theView.getTextToCode());
             theModel.setSecretLetter(theView.getSecretLetter());          
@@ -45,6 +52,25 @@ public class VigenereController {
             }
             
             theView.setEncodedMessage(theModel.getEncodedMessage());
-        }
+        });
     }
+    
+//    /**
+//     * Class implementing EncodeListener object
+//     */
+//    class EncodeListener implements ActionListener{
+//        @Override
+//        public void actionPerformed(ActionEvent evt){
+//           try{
+//            theModel.setTextToCode(theView.getTextToCode());
+//            theModel.setSecretLetter(theView.getSecretLetter());          
+//            theModel.encodeMessage();
+//            }
+//            catch(EmptyStringException e){
+//                theView.displayErrorMessage(e.getMessage());
+//            }
+//            
+//            theView.setEncodedMessage(theModel.getEncodedMessage());
+//        }
+//    }
 }
