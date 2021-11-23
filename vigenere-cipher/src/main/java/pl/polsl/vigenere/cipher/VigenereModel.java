@@ -4,6 +4,7 @@
  */
 package pl.polsl.vigenere.cipher;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -67,29 +68,30 @@ public class VigenereModel {
      * Method responsible for encoding given message.
      */
     public void encodeMessage() throws EmptyStringException{
-        char[] charEncodedMessage = new char[textToCode.length()];
+        ArrayList<Character> charEncodedMessage = new ArrayList<Character>();
         createKey();
         
-        if(encryptionKey.isEmpty() || textToCode.isEmpty()){
-            throw new EmptyStringException("Ciąg do zakodowania lub klucz jest pusty!");
+        if(textToCode.isEmpty()){
+            throw new EmptyStringException("Ciąg do zakodowania jest pusty!");
         }
-        
-        char[][] cipherTable=new char[26][26];
+
+        ArrayList<ArrayList<Character>> cipherTable = new ArrayList<ArrayList<Character>>();
+//        char[][] cipherTable1 = new char[26][26];
         createCipherTable(cipherTable);
+
         Character spaceChar = ' ';
         
         for(int i = 0; i < textToCode.length(); i++) {
             if( textToCode.charAt(i) == ' ' ){
-                charEncodedMessage[i] = ' ';
+                charEncodedMessage.add(' ');
                 continue;
             }
             else if(Character.getNumericValue(textToCode.charAt(i)) > 35
                     || Character.getNumericValue(textToCode.charAt(i)) < 10 ){
-                charEncodedMessage[i] = textToCode.charAt(i);
+                charEncodedMessage.add(textToCode.charAt(i));
                 continue;
             }
-            
-            
+
             int keyValue;
             if(Character.getNumericValue(encryptionKey.charAt(i)) > 35
                     || Character.getNumericValue(encryptionKey.charAt(i)) < 10){
@@ -98,13 +100,14 @@ public class VigenereModel {
             else {
                 keyValue = Character.getNumericValue(encryptionKey.charAt(i)) - 10; 
             }
-            //Read char value and then get numeric value of character,
+            // Read char value and then get numeric value of character,
             // substitute by 10 (getNumericValue also reads values of 0-9 numbers)
-            charEncodedMessage[i] = cipherTable[Character.getNumericValue(textToCode.charAt(i)) - 10][keyValue];
+//            charEncodedMessage.add(cipherTable[Character.getNumericValue(textToCode.charAt(i)) - 10][keyValue]);
+            charEncodedMessage.add(cipherTable.get(Character.getNumericValue(textToCode.charAt(i)) - 10).get(keyValue));
         }
         
-        encodedMessage.setTextEncodedMessage(new String(charEncodedMessage));
-//        encodedMessage = new String(charEncodedMessage);
+        encodedMessage.setTextEncodedMessageFromArrayList(charEncodedMessage);
+//        encodedMessage.setTextEncodedMessage( LAMBDA EXPR );  // <--- 99% that I can insert lambda expression here, but how?!?
     }
     
     /**
@@ -170,10 +173,11 @@ public class VigenereModel {
      * Initialize cipherTable with uppercase letters.
      * @param cipherTable Table to bo initialized
      */
-    private void createCipherTable(char[][] cipherTable){
+    private void createCipherTable(ArrayList<ArrayList<Character>> cipherTable){
         for (int i = 0; i < 26; i++) {
+            cipherTable.add(new ArrayList<Character>());
             for (int j = 0; j < 26; j++) {
-                cipherTable[i][j]=(char)(65 + ((i+j) % 26));
+                cipherTable.get(i).add((char)(65 + ((i+j) % 26)));
             }
         }
     }
@@ -190,5 +194,13 @@ class EncodedMessage{
     
     public void setTextEncodedMessage(String temp){
         this.textEncodedMessage = temp;
-    }
+    };
+
+    public void setTextEncodedMessageFromArrayList(ArrayList<Character> temp){
+        StringBuilder builder = new StringBuilder(temp.size());
+        for(Character ch: temp){
+            builder.append(ch);
+        }
+        this.textEncodedMessage = builder.toString();
+    };
 }
