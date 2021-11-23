@@ -6,6 +6,8 @@ package pl.polsl.vigenere.cipher;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
+import java.util.HashSet;
 
 /**
  * @author Bartosz Dera
@@ -34,17 +36,15 @@ public class VigenereController {
         this.theView=theView;
         
         if(args.length != 0){
-//            this.args=args;
-            theModel.setParamFromCommandLine(args);      //Why did it work before pull request?
+            setParamFromCommandLine(args);
             theView.setTextToCode(theModel.getTextToCode());
             theView.setSecretLetter(theModel.getSecretLetter());
         }
-        
-        //this.theView.addEncodeListener(new EncodeListener());        
+
         this.theView.addEncodeListener(evt -> {
             try{
             theModel.setTextToCode(theView.getTextToCode());
-            theModel.setSecretLetter(theView.getSecretLetter());          
+            theModel.setSecretLetter(theView.getSecretLetter());
             theModel.encodeMessage();
             }
             catch(EmptyStringException e){
@@ -55,22 +55,44 @@ public class VigenereController {
         });
     }
     
-//    /**
-//     * Class implementing EncodeListener object
-//     */
-//    class EncodeListener implements ActionListener{
-//        @Override
-//        public void actionPerformed(ActionEvent evt){
-//           try{
-//            theModel.setTextToCode(theView.getTextToCode());
-//            theModel.setSecretLetter(theView.getSecretLetter());          
-//            theModel.encodeMessage();
-//            }
-//            catch(EmptyStringException e){
-//                theView.displayErrorMessage(e.getMessage());
-//            }
-//            
-//            theView.setEncodedMessage(theModel.getEncodedMessage());
-//        }
-//    }
+    /**
+     * Method analyzing parameters and executed when given in command line.
+     * @param args Command line
+     */
+    public void setParamFromCommandLine(String[] args){
+        for (int i = 0; i < args.length; i++) {
+            if(args[i].equalsIgnoreCase("-key")){
+                try{
+                    theModel.setSecretLetter(args[i+1]);
+                }
+                catch(EmptyStringException ex){
+                    theView.displayErrorMessage(ex.getMessage());
+                }
+            }
+            else if(args[i].equalsIgnoreCase("-message")){
+                    String[] temp = Arrays.copyOfRange(args, i+1, args.length);
+                    
+                theModel.setTextToCode(readTextToCode(temp));
+                }
+        }
+    }
+    
+     /**
+     * Method reading whole textToCode string from command line
+     * @param temp Array of Strings to be analyzed
+     * @return textToCode
+     */
+    private String readTextToCode(String[] temp){
+        int i = 0;
+        String result = ""; //is initialization needed?
+        while(i < temp.length){
+            if(temp[i].charAt(0) == '-'){
+                break;
+            }
+            result = result.concat(temp[i]+' ');
+            i++;
+        }
+        
+        return result;
+    }
 }

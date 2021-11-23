@@ -5,6 +5,7 @@
 package pl.polsl.vigenere.cipher;
 
 import java.awt.event.ActionListener;
+import java.util.Locale;
 import javax.swing.*;
 
 /**
@@ -139,7 +140,7 @@ public class VigenereView extends JFrame {
      * @return String object of secretLetter
      */
     public String getSecretLetter(){
-        return jTextKey.getText();
+        return jTextKey.getText().toUpperCase();
     }
     
     /**
@@ -155,7 +156,10 @@ public class VigenereView extends JFrame {
      * @param encodedText return value after encoding message
      */
     public void setEncodedMessage(String encodedText){
-        jTextEncoded.setText(encodedText);
+//        SwingUtilities.invokeLater(                       //<----------- NIE WIEM JAK TO ZROBIC
+//                new Runnable(){
+                    jTextEncoded.setText(encodedText);
+//                    });
     }
     
     /**
