@@ -157,10 +157,8 @@ public class VigenereView extends JFrame {
      */
     public void setEncodedMessage(String encodedText){
         SwingUtilities.invokeLater(                       //<----------- NIE WIEM JAK TO ZROBIC
-               new Runnable(){
-                   public void run(){
-                    jTextEncoded.setText(encodedText);
-                    }});
+               () ->jTextEncoded.setText(encodedText)
+                    );
     }
     
     /**
