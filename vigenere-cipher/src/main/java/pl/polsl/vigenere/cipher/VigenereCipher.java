@@ -4,6 +4,10 @@
  */
 package pl.polsl.vigenere.cipher;
 
+import pl.polsl.vigenere.cipher.view.VigenereView;
+import pl.polsl.vigenere.cipher.model.VigenereModel;
+import pl.polsl.vigenere.cipher.controller.VigenereController;
+
 /**
  * @author Bartosz Dera
  * @version 2.0
