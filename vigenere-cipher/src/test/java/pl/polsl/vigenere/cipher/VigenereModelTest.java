@@ -8,8 +8,8 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import pl.polsl.vigenere.cipher.exception.EmptyStringException;
-import pl.polsl.vigenere.cipher.model.VigenereModel;
+import pl.polsl.vigenereCipher.exception.EmptyStringException;
+import pl.polsl.vigenereCipher.model.VigenereModel;
 
 
 public class VigenereModelTest {

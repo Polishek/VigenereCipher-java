@@ -2,11 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package pl.polsl.vigenere.cipher;
+package pl.polsl.vigenereCipher;
 
-import pl.polsl.vigenere.cipher.view.VigenereView;
-import pl.polsl.vigenere.cipher.model.VigenereModel;
-import pl.polsl.vigenere.cipher.controller.VigenereController;
+import pl.polsl.vigenereCipher.view.VigenereView;
+import pl.polsl.vigenereCipher.model.VigenereModel;
+import pl.polsl.vigenereCipher.controller.VigenereController;
 
 /**
  * @author Bartosz Dera

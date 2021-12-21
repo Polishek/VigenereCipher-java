@@ -2,15 +2,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package pl.polsl.vigenere.cipher.controller;
+package pl.polsl.vigenereCipher.controller;
 
-import pl.polsl.vigenere.cipher.exception.EmptyStringException;
+import pl.polsl.vigenereCipher.exception.EmptyStringException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
 import java.util.HashSet;
-import pl.polsl.vigenere.cipher.model.VigenereModel;
-import pl.polsl.vigenere.cipher.view.VigenereView;
+import pl.polsl.vigenereCipher.model.VigenereModel;
+import pl.polsl.vigenereCipher.view.VigenereView;
 
 /**
  * @author Bartosz Dera

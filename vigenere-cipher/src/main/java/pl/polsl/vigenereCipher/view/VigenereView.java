@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package pl.polsl.vigenere.cipher.view;
+package pl.polsl.vigenereCipher.view;
 
 import java.awt.event.ActionListener;
 import java.util.Locale;

@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package pl.polsl.vigenere.cipher.model;
+package pl.polsl.vigenereCipher.model;
 
-import pl.polsl.vigenere.cipher.exception.EmptyStringException;
+import pl.polsl.vigenereCipher.exception.EmptyStringException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
