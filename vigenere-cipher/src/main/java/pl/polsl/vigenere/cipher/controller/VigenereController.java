@@ -49,12 +49,11 @@ public class VigenereController {
             theModel.setTextToCode(theView.getTextToCode());
             theModel.setSecretLetter(theView.getSecretLetter());
             theModel.encodeMessage();
+            theView.setEncodedMessage(theModel.getEncodedMessage());
             }
             catch(EmptyStringException e){
                 theView.displayErrorMessage(e.getMessage());
             }
-            
-            theView.setEncodedMessage(theModel.getEncodedMessage());
         });
     }
     

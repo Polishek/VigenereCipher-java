@@ -14,6 +14,8 @@ import javax.swing.*;
  * Class implementing VigenereModel object
  */
 public class VigenereView extends JFrame {
+    
+    public Boolean initialValue = true;
 
     /**
      * Creates new form VigenereView
@@ -213,8 +215,16 @@ public class VigenereView extends JFrame {
      */
     public void setEncodedMessage(String encodedText){
         SwingUtilities.invokeLater(                       //<----------- NIE WIEM JAK TO ZROBIC
-               () ->jTextEncoded.setText(encodedText)
-                    );
+               () -> {
+                   if(initialValue){
+                        jTextEncoded.setText(encodedText);
+                        initialValue = false;
+                   }
+                   else{
+                        moveTable();
+                        jTextEncoded.setText(encodedText);
+                    }
+                       });
     }
     
     /**
@@ -231,5 +241,42 @@ public class VigenereView extends JFrame {
      */
     public void displayErrorMessage(String errorMessage){
         JOptionPane.showMessageDialog(this, errorMessage);
+    }
+    
+    /**
+     * Method checks if jTable2 is null.
+     * @return True if table is null.
+     */
+    public Boolean tableIsNull(){
+        for(int i = 0; i < jTable2.getRowCount(); i++){
+            for(int j = 0; j < jTable2.getColumnCount(); j++){
+                if(jTable2.getValueAt(i, j) != null){
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+    }
+    
+    /**
+     * 
+     * @param text
+     * @param row
+     * @param column 
+     */
+    public void tableInsertAt(String text, int row, int column){
+        jTable2.setValueAt(text, row, column);
+    }
+    
+    /**
+     * 
+     * @param text 
+     */
+    public void moveTable(){
+        jTable2.setValueAt(jTable2.getValueAt(2, 0), 3, 0);
+        jTable2.setValueAt(jTable2.getValueAt(1, 0), 2, 0);
+        jTable2.setValueAt(jTable2.getValueAt(0, 0), 1, 0);
+        jTable2.setValueAt(jTextEncoded.getText(), 0, 0);
     }
 }
