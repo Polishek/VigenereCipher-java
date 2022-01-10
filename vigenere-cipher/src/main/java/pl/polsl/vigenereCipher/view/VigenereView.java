@@ -260,18 +260,7 @@ public class VigenereView extends JFrame {
     }
     
     /**
-     * 
-     * @param text
-     * @param row
-     * @param column 
-     */
-    public void tableInsertAt(String text, int row, int column){
-        jTable2.setValueAt(text, row, column);
-    }
-    
-    /**
-     * 
-     * @param text 
+     * Method updating the context of the history table.
      */
     public void moveTable(){
         jTable2.setValueAt(jTable2.getValueAt(2, 0), 3, 0);
