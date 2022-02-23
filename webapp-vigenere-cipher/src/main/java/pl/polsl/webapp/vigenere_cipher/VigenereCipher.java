@@ -2,13 +2,20 @@ package pl.polsl.webapp.vigenere_cipher;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Set;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.PersistenceException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import pl.polsl.webapp.model.VigenereModel;
+import entities.ClearMessageAndKey;
+import entities.CodedMessage;
+import java.util.Set;
 
 /**
  *
@@ -40,12 +47,41 @@ public class VigenereCipher extends HttpServlet {
         theModel.setTextToCode(textToCode);
         theModel.setSecretLetter(keyLetter);
         theModel.encodeMessage();
+         
+        ClearMessageAndKey clearMessageAndKey = new ClearMessageAndKey();
+        clearMessageAndKey.setClearMessage(theModel.getTextToCode()); //set textToCode in ClearMessageAndKey
+        clearMessageAndKey.setKey(theModel.getSecretLetter()); //set keyLetter in ClearMessageAndKey
+
+        CodedMessage codedMessage = new CodedMessage();
+        codedMessage.setCodedMessage(theModel.getEncodedMessage());
+       
+        clearMessageAndKey.setCodedMessage(codedMessage); //persist clearMessageAndKey
+        codedMessage.setClearMessageAndKey(clearMessageAndKey);
+        this.persistObject(clearMessageAndKey);
+        this.persistObject(codedMessage); //persist codedMessage       
+       
         
         out.println("<html>");
         out.println("<body>");
         out.println("Wiadomość zaszyfrowana: " + theModel.getEncodedMessage());
         out.println("</body>");
         out.println("</html>");
+    }
+    
+    public void persistObject(Object object) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("pl.polsl.webapp.vigenere_cipher_JPA_jar_1.0-SNAPSHOTPU");
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        try {
+            em.persist(object);
+            em.getTransaction().commit();
+            System.out.println("Object persisted");
+        } catch (PersistenceException e) {
+            e.printStackTrace();
+            em.getTransaction().rollback();
+        } finally {
+            em.close();
+        }
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
